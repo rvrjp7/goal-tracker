@@ -2,6 +2,7 @@ import React, { useState, useContext, useEffect, useCallback, useMemo } from 're
 import { AppContainer } from './GoalTracker.styles';
 import { useSelector } from 'react-redux';
 import { useForm } from 'react-hook-form';
+import { AddTaskContainer } from './GoalTracker.styles';
 function GoalTracker() {
     const logInState = useSelector(state => state.logInState);
     const [taskList, setTaskList] = useState([]);
@@ -28,33 +29,41 @@ function GoalTracker() {
                     {
                         addTask?
                         <div>
-                            <form onSubmit={handleSubmit(onSubmit)}>
-                                <input type={'text'} {...register('task')}></input>
-                                <input type={'number'} {...register('targetDays')}></input>
-                                <input type={'submit'} value={'submit'}></input>
-                            </form>
+                            <AddTaskContainer onSubmit={handleSubmit(onSubmit)}>
+                                <input 
+                                className=' block h-100 w-500 shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline m-2 ' 
+                                placeholder='Enter task' type={'text'} {...register('task')}></input>
+                                <input 
+                                className='block w-200 shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline m-2 ' 
+                                placeholder='Enter targeted days' type={'number'} {...register('targetDays')}></input>
+                                <input 
+                                className='m-2 block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ' 
+                                type={'submit'} value={'submit'}></input>
+                            </AddTaskContainer>
                         </div>
                         :
                         <>
-                        <button onClick={onAddTask}>Add New Task</button>
+                        <button  onClick={onAddTask}
+                        className='m-2 block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded '
+                        >Add New Task</button>
                         {taskList.length>0 && 
-                        <table>
+                        <table className='border-collapse w-full border border-gray-400 dark:border-gray-500 bg-white dark:bg-gray-800 text-sm shadow-sm'>
                             <thead>
                                 <tr>
-                                    <th>Task</th>
-                                    <th>Targeted Days</th>
-                                    <th>Coming soon...</th>
-                                    <th>Coming soon...</th>
+                                    <th className='w-200 border border-gray-300 dark:border-gray-600 font-semibold p-4 text-gray-900 dark:text-gray-200 text-left'>Task</th>
+                                    <th className='w-200 break-all border border-gray-300 dark:border-gray-600 font-semibold p-4 text-gray-900 dark:text-gray-200 text-left'>Targeted Days</th>
+                                    <th className='w-200 break-all border border-gray-300 dark:border-gray-600 font-semibold p-4 text-gray-900 dark:text-gray-200 text-left'>Status</th>
+                                    <th className='w-200 break-all border border-gray-300 dark:border-gray-600 font-semibold p-4 text-gray-900 dark:text-gray-200 text-left'>Might Motivate you</th>
                                 </tr>
                             </thead>
                             <tbody>
                             {
                                 taskList.map((task, index)=>
                                     <tr key={'item-'+index}>
-                                        <td>{task.task}</td>
-                                        <td>{task.targetDays}</td>
-                                        <td>Coming soon...</td>
-                                        <td>Coming soon...</td>
+                                        <td className='w-200 break-all border border-gray-300 dark:border-gray-600 font-semibold p-4 text-gray-900 dark:text-gray-200 text-left'>{task.task}</td>
+                                        <td className='w-200 break-all border border-gray-300 dark:border-gray-600 font-semibold p-4 text-gray-900 dark:text-gray-200 text-left'>{task.targetDays}</td>
+                                        <td className='w-200 break-all border border-gray-300 dark:border-gray-600 font-semibold p-4 text-gray-900 dark:text-gray-200 text-left'>Coming soon...</td>
+                                        <td className='w-200 break-all border border-gray-300 dark:border-gray-600 font-semibold p-4 text-gray-900 dark:text-gray-200 text-left'>Coming soon...</td>
                                     </tr>
                                 )
                             }
@@ -63,7 +72,6 @@ function GoalTracker() {
                         }
                         </>
                     }
-                Test
                 </AppContainer>
         }
         </>

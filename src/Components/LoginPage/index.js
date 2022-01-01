@@ -9,7 +9,7 @@ function LoginPage() {
   const dispatch = useDispatch();
     const onSubmit = (data) => {
         console.log(data);
-        if(data.uName=='admin' && data.pwd == 'admin'){
+        if(data.uName==='admin' && data.pwd === 'admin'){
             console.log('logIn');
             dispatch({type: "logInState", value:true});
         }

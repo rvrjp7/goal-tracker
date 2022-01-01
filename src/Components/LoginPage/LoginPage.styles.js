@@ -1,6 +1,6 @@
 import styled from "styled-components";
 export const LoginPageContainer = styled.form`
-    width: 50%;
+    width: 400px;
     height: 50%;
     top: 50%;
     left: 50%;

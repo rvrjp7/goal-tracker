@@ -19,11 +19,11 @@ function LoginPage() {
         <>
             {logInState ? <></>:
                 <LoginPageContainer onSubmit={handleSubmit(onSubmit)}>
-                    <label htmlFor='uName'>Username</label>
-                    <input type={'text'} name='uName' {...register('uName')}></input>
-                    <label htmlFor='pwd'>password</label>
-                    <input type={'password'} name='pwd' {...register('pwd')}></input>
-                    <input type={'submit'} value={'submit'}></input>
+                    <label className='block text-gray-700 text-sm font-bold m-auto w-full' htmlFor='uName'>Username</label>
+                    <input className='shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline m-auto w-full' type={'text'} name='uName' {...register('uName')}></input>
+                    <label className='mt-4 block text-gray-700 text-sm font-bold m-auto w-full' htmlFor='pwd'>password</label>
+                    <input className='shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline m-auto w-full' type={'password'} name='pwd' {...register('pwd')}></input>
+                    <input className='mt-4 block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ' type={'submit'} value={'submit'}></input>
                 </LoginPageContainer>
             }
         </>

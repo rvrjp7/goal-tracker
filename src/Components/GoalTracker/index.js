@@ -14,9 +14,32 @@ function GoalTracker() {
     const onSubmit = (data) => {
         console.log(data);
         setAddTask(false);
+        const date = new Date();
+        let strFullDate=date.getDate() +'/'+(date.getMonth()+1)+'/'+date.getFullYear();
+        data.dateAdded = strFullDate;
+        const lastDate =new Date(date.getTime()+(data.targetDays*24*60*60*1000));
+        let strLastDate=lastDate.getDate() +'/'+(date.getMonth()+1)+'/'+date.getFullYear();
+        data.lastDate = strLastDate;
         taskList.push(data);
         setTaskList([...taskList]);
         
+    }
+    const getDaysLeft=(task)=>{
+        const date = new Date();
+        let strFullDate=date.getDate() +'/'+(date.getMonth()+1)+'/'+date.getFullYear();
+        return datediff(parseDate(strFullDate), parseDate(task.lastDate))
+    }
+    // new Date("dateString") is browser-dependent and discouraged, so we'll write
+    // a simple parse function for U.S. date format (which does no error checking)
+    function parseDate(str) {
+        var mdy = str.split('/');
+        return new Date(mdy[2], mdy[1], mdy[0]);
+    }
+
+    function datediff(first, second) {
+        // Take the difference between the dates and divide by milliseconds per day.
+        // Round to nearest whole number to deal with DST.
+        return Math.round((second-first)/(1000*60*60*24));
     }
     useEffect(()=>{
         console.log(taskList);
@@ -52,6 +75,9 @@ function GoalTracker() {
                                 <tr>
                                     <th className='w-200 border border-gray-300 dark:border-gray-600 font-semibold p-4 text-gray-900 dark:text-gray-200 text-left'>Task</th>
                                     <th className='w-200 break-all border border-gray-300 dark:border-gray-600 font-semibold p-4 text-gray-900 dark:text-gray-200 text-left'>Targeted Days</th>
+                                    <th className='w-200 break-all border border-gray-300 dark:border-gray-600 font-semibold p-4 text-gray-900 dark:text-gray-200 text-left'>Date Added</th>
+                                    <th className='w-200 break-all border border-gray-300 dark:border-gray-600 font-semibold p-4 text-gray-900 dark:text-gray-200 text-left'>Last Date</th>
+                                    <th className='w-200 break-all border border-gray-300 dark:border-gray-600 font-semibold p-4 text-gray-900 dark:text-gray-200 text-left'>Days Left</th>
                                     <th className='w-200 break-all border border-gray-300 dark:border-gray-600 font-semibold p-4 text-gray-900 dark:text-gray-200 text-left'>Status</th>
                                     <th className='w-200 break-all border border-gray-300 dark:border-gray-600 font-semibold p-4 text-gray-900 dark:text-gray-200 text-left'>Might Motivate you</th>
                                 </tr>
@@ -62,6 +88,9 @@ function GoalTracker() {
                                     <tr key={'item-'+index}>
                                         <td className='w-200 break-all border border-gray-300 dark:border-gray-600 font-semibold p-4 text-gray-900 dark:text-gray-200 text-left'>{task.task}</td>
                                         <td className='w-200 break-all border border-gray-300 dark:border-gray-600 font-semibold p-4 text-gray-900 dark:text-gray-200 text-left'>{task.targetDays}</td>
+                                        <td className='w-200 break-all border border-gray-300 dark:border-gray-600 font-semibold p-4 text-gray-900 dark:text-gray-200 text-left'>{task.dateAdded}</td>
+                                        <td className='w-200 break-all border border-gray-300 dark:border-gray-600 font-semibold p-4 text-gray-900 dark:text-gray-200 text-left'>{task.lastDate}</td>
+                                        <td className='w-200 break-all border border-gray-300 dark:border-gray-600 font-semibold p-4 text-gray-900 dark:text-gray-200 text-left'>{getDaysLeft(task)}</td>
                                         <td className='w-200 break-all border border-gray-300 dark:border-gray-600 font-semibold p-4 text-gray-900 dark:text-gray-200 text-left'>Coming soon...</td>
                                         <td className='w-200 break-all border border-gray-300 dark:border-gray-600 font-semibold p-4 text-gray-900 dark:text-gray-200 text-left'>Coming soon...</td>
                                     </tr>

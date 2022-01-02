@@ -1,13 +1,15 @@
-import React, { useState, useContext, useEffect, useCallback, useMemo } from 'react';
+import React, { useState, useContext, useEffect, useCallback, useMemo, useRef } from 'react';
 import { AppContainer } from './GoalTracker.styles';
 import { useSelector } from 'react-redux';
 import { useForm } from 'react-hook-form';
 import { AddTaskContainer } from './GoalTracker.styles';
+import axios from 'axios';
 function GoalTracker() {
     const logInState = useSelector(state => state.logInState);
     const [taskList, setTaskList] = useState([]);
     const [addTask, setAddTask] = useState(false);
     const {register, handleSubmit}=useForm();
+    const [happySrc, setHappySrc] = useState("");
     const onAddTask = (params) => {
         setAddTask(true);
     }
@@ -44,6 +46,20 @@ function GoalTracker() {
     useEffect(()=>{
         console.log(taskList);
     },[taskList])
+    
+    useEffect(()=>{
+        var apikey = "X13D4X8K6RJ9";
+        var lmt = 8;
+        // test search term
+        var search_term = "happy emoji";
+        // using default locale of en_US
+        var search_url = "https://g.tenor.com/v1/search?q=" + search_term + "&key=" +
+            apikey + "&limit=" + lmt;
+        axios.get(search_url).then((response)=>{
+            console.log(response.data)
+            setHappySrc(response.data.results[0].media[0].nanogif.url)
+        }).catch((err)=>{console.log(err)})
+    },[])
     return (  
         <>
         {
@@ -79,7 +95,6 @@ function GoalTracker() {
                                     <th className='w-200 break-all border border-gray-300 dark:border-gray-600 font-semibold p-4 text-gray-900 dark:text-gray-200 text-left'>Last Date</th>
                                     <th className='w-200 break-all border border-gray-300 dark:border-gray-600 font-semibold p-4 text-gray-900 dark:text-gray-200 text-left'>Days Left</th>
                                     <th className='w-200 break-all border border-gray-300 dark:border-gray-600 font-semibold p-4 text-gray-900 dark:text-gray-200 text-left'>Status</th>
-                                    <th className='w-200 break-all border border-gray-300 dark:border-gray-600 font-semibold p-4 text-gray-900 dark:text-gray-200 text-left'>Might Motivate you</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -91,8 +106,7 @@ function GoalTracker() {
                                         <td className='w-200 break-all border border-gray-300 dark:border-gray-600 font-semibold p-4 text-gray-900 dark:text-gray-200 text-left'>{task.dateAdded}</td>
                                         <td className='w-200 break-all border border-gray-300 dark:border-gray-600 font-semibold p-4 text-gray-900 dark:text-gray-200 text-left'>{task.lastDate}</td>
                                         <td className='w-200 break-all border border-gray-300 dark:border-gray-600 font-semibold p-4 text-gray-900 dark:text-gray-200 text-left'>{getDaysLeft(task)}</td>
-                                        <td className='w-200 break-all border border-gray-300 dark:border-gray-600 font-semibold p-4 text-gray-900 dark:text-gray-200 text-left'>Coming soon...</td>
-                                        <td className='w-200 break-all border border-gray-300 dark:border-gray-600 font-semibold p-4 text-gray-900 dark:text-gray-200 text-left'>Coming soon...</td>
+                                        <td className='w-200 break-all border border-gray-300 dark:border-gray-600 font-semibold p-4 text-gray-900 dark:text-gray-200 text-left'><img src={happySrc} alt='sad'></img></td>
                                     </tr>
                                 )
                             }

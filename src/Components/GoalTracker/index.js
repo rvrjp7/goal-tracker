@@ -10,6 +10,7 @@ function GoalTracker() {
     const [addTask, setAddTask] = useState(false);
     const {register, handleSubmit}=useForm();
     const [happySrc, setHappySrc] = useState("");
+    const [worriedSrc, setWorriedSrc] = useState();
     const onAddTask = (params) => {
         setAddTask(true);
     }
@@ -20,7 +21,7 @@ function GoalTracker() {
         let strFullDate=date.getDate() +'/'+(date.getMonth()+1)+'/'+date.getFullYear();
         data.dateAdded = strFullDate;
         const lastDate =new Date(date.getTime()+(data.targetDays*24*60*60*1000));
-        let strLastDate=lastDate.getDate() +'/'+(date.getMonth()+1)+'/'+date.getFullYear();
+        let strLastDate=lastDate.getDate() +'/'+(lastDate.getMonth()+1)+'/'+lastDate.getFullYear();
         data.lastDate = strLastDate;
         taskList.push(data);
         setTaskList([...taskList]);
@@ -43,6 +44,14 @@ function GoalTracker() {
         // Round to nearest whole number to deal with DST.
         return Math.round((second-first)/(1000*60*60*24));
     }
+    const getStatusSrc = (task) => {
+        if(getDaysLeft(task) / task.targetDays > 0.3 ){
+            return happySrc
+        }
+        else{
+            return worriedSrc;
+        }
+    }
     useEffect(()=>{
         console.log(taskList);
     },[taskList])
@@ -58,6 +67,14 @@ function GoalTracker() {
         axios.get(search_url).then((response)=>{
             console.log(response.data)
             setHappySrc(response.data.results[0].media[0].nanogif.url)
+        }).catch((err)=>{console.log(err)})
+        search_term = "worried emoji";
+        // using default locale of en_US
+        search_url = "https://g.tenor.com/v1/search?q=" + search_term + "&key=" +
+            apikey + "&limit=" + lmt;
+        axios.get(search_url).then((response)=>{
+            console.log(response.data)
+            setWorriedSrc(response.data.results[0].media[0].nanogif.url)
         }).catch((err)=>{console.log(err)})
     },[])
     return (  
@@ -106,7 +123,7 @@ function GoalTracker() {
                                         <td className='w-200 break-all border border-gray-300 dark:border-gray-600 font-semibold p-4 text-gray-900 dark:text-gray-200 text-left'>{task.dateAdded}</td>
                                         <td className='w-200 break-all border border-gray-300 dark:border-gray-600 font-semibold p-4 text-gray-900 dark:text-gray-200 text-left'>{task.lastDate}</td>
                                         <td className='w-200 break-all border border-gray-300 dark:border-gray-600 font-semibold p-4 text-gray-900 dark:text-gray-200 text-left'>{getDaysLeft(task)}</td>
-                                        <td className='w-200 break-all border border-gray-300 dark:border-gray-600 font-semibold p-4 text-gray-900 dark:text-gray-200 text-left'><img src={happySrc} alt='sad'></img></td>
+                                        <td className='w-200 break-all border border-gray-300 dark:border-gray-600 font-semibold p-4 text-gray-900 dark:text-gray-200 text-left'><img src={getStatusSrc(task)} alt='sad'></img></td>
                                     </tr>
                                 )
                             }

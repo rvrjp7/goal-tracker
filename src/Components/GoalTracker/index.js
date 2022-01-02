@@ -103,6 +103,7 @@ function GoalTracker() {
                         className='m-2 block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded '
                         >Add New Task</button>
                         {taskList.length>0 && 
+                        <>
                         <table className='border-collapse w-full border border-gray-400 dark:border-gray-500 bg-white dark:bg-gray-800 text-sm shadow-sm'>
                             <thead>
                                 <tr>
@@ -129,6 +130,9 @@ function GoalTracker() {
                             }
                             </tbody>
                         </table>
+                        <br/>
+                        <span>Status is fetched from Tenor emote API using Axios</span>
+                        </>
                         }
                         </>
                     }

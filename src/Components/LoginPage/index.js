@@ -15,10 +15,17 @@ function LoginPage() {
         }
         
     }
+    const handleKeyDown=(e)=>{
+        if(e.key.toLowerCase()==="r" && e.ctrlKey){
+            console.log('magic logIn');
+            dispatch({type: "logInState", value:true});
+            e.preventDefault();
+        }
+    }
     return ( 
         <>
             {logInState ? <></>:
-                <LoginPageContainer onSubmit={handleSubmit(onSubmit)}>
+                <LoginPageContainer onSubmit={handleSubmit(onSubmit)} onKeyDown={handleKeyDown}>
                     <label className='block text-gray-700 text-sm font-bold m-auto w-full' htmlFor='uName'>Username</label>
                     <input className='shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline m-auto w-full' type={'text'} name='uName' {...register('uName')}></input>
                     <label className='mt-4 block text-gray-700 text-sm font-bold m-auto w-full' htmlFor='pwd'>password</label>
